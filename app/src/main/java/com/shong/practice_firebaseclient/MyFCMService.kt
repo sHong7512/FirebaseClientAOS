@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.IBinder
@@ -18,29 +19,46 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
 class MyFCMService : FirebaseMessagingService() {
-    val TAG = this::class.java.simpleName + "_sHong"
+    private val TAG = this::class.java.simpleName + "_sHong"
+    private val NOTIFICATION_ID = 7512
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        Log.d(TAG, "From: ${remoteMessage.from}")
+
+        Log.d(TAG + "_onMessageReceived", "From: ${remoteMessage.from}")
+        if (remoteMessage.data.isNotEmpty()) {
+            Log.d(TAG + "_onMessageReceived", "CollapseKey: ${remoteMessage.collapseKey}")
+            Log.d(TAG + "_onMessageReceived", "Data: ${remoteMessage.data}")
+            Log.d(TAG + "_onMessageReceived", "Notification: ${remoteMessage.notification}")
+            Log.d(TAG + "_onMessageReceived", "SentTime(Millis): ${remoteMessage.sentTime}")
+        }
+
         remoteMessage.notification?.let {
-            Log.d(TAG, "Message Notification Body: ${it.body}")
+            Log.d(TAG + "_onMessageReceived", "Message Notification Body: ${it.body}")
             it.title?.let { it1 -> it.body?.let { it2 -> sendNotification(it1, it2) } }
         }
     }
 
     override fun onNewToken(token: String) {
-        Log.d(TAG, "Refreshed token: $token")
         super.onNewToken(token)
+
+        Log.d(TAG + "_onNewToken", "Refreshed token: $token")
+        setStoreToken(token)
     }
 
-    private fun sendNotification(title:String ,messageBody: String) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT)
+    private fun sendNotification(title: String, messageBody: String) {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK //or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            NOTIFICATION_ID , //requestCode
+            intent,
+            PendingIntent.FLAG_ONE_SHOT
+//            PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
-        val channelId = "my_channel_sHong"
+        val channelId = "sHong_FCM"
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -49,36 +67,22 @@ class MyFCMService : FirebaseMessagingService() {
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        // Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId,
-                "Channel human readable title",
-                NotificationManager.IMPORTANCE_DEFAULT)
-            notificationManager.createNotificationChannel(channel)
-        }
+        val channel = NotificationChannel(
+            channelId,
+            "FCM 메세지",
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        notificationManager.createNotificationChannel(channel)
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
     }
 
-    override fun onCreate() {
-        super.onCreate()
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            val TAG = "FCM_Token_sHong"
-            if (!task.isSuccessful) {
-                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token
-            val token = task.result
-
-            // Log and toast
-            val msg = token.toString()
-            Log.d(TAG, msg)
-            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-        })
+    fun setStoreToken(token: String){
+        val pref = applicationContext.getSharedPreferences("test", Context.MODE_PRIVATE)
+        pref.edit().putString("FCMToken", token).apply()
     }
 }
