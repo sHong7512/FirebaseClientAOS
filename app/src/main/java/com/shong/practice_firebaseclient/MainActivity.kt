@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
@@ -53,5 +54,18 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG + "_FCMToken", "stored Token : ${pref.getString("FCMToken", "")!!}")
 
         return pref.getString("FCMToken", "x")!!
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val eventName = "main_activity_ready"
+
+        FirebaseAnalytics.getInstance(this).logEvent(eventName,null)
+        FirebaseInAppMessaging.getInstance().triggerEvent(eventName)
+
+//        var firebaseInAppMessagingDisplay = FirebaseInAppMessagingDisplay { inAppMessage, cb ->
+//            Log.e(TAG, "Display Message callback invoked")
+//        }
+//        FirebaseInAppMessaging.getInstance().setMessageDisplayComponent(firebaseInAppMessagingDisplay)
     }
 }

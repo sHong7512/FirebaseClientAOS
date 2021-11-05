@@ -6,7 +6,7 @@ Tools -> firebase -> Cloud Messaging -> Set up Firebase Cloud Messaging
 
 firebase 프로젝트 생성 -> 앱등록 -> 구성파일 다운로드(google-services.json를 app폴더에 추가) -> firebase SDK추가
 
-# Setting Analytics (for DebugView)
+# Setting Analytics (and DebugView)
 
 - Path (Mac) (On Terminal) 
 
@@ -36,6 +36,17 @@ export PATH=$PATH:/Users/shong/Library/Android/sdk/platform-tools/
 - FireBaseConsole DebugView
 
 애널리틱스 -> Debugview
+
+# Setting FIAM
+
+- gradle에 추가시켜준다
+
+```
+implementation 'com.google.firebase:firebase-inappmessaging-display-ktx'
+```
+
+참고 : https://firebase.google.com/docs/in-app-messaging?authuser=2&platform=android
+
 
 # Requirements
 - Kotlin 1.5.10
