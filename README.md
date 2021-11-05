@@ -39,7 +39,7 @@ export PATH=$PATH:/Users/shong/Library/Android/sdk/platform-tools/
 
 # Setting FIAM
 
-- gradle에 추가시켜준다
+- gradle (:app)
 
 ```
 implementation 'com.google.firebase:firebase-inappmessaging-display-ktx'
@@ -47,6 +47,15 @@ implementation 'com.google.firebase:firebase-inappmessaging-display-ktx'
 
 참고 : https://firebase.google.com/docs/in-app-messaging?authuser=2&platform=android
 
+# Setting Remote Config
+
+- gradle (:app)
+
+```
+implementation 'com.google.firebase:firebase-config-ktx'
+```
+
+참고 : https://firebase.google.com/docs/remote-config/get-started?hl=ko&platform=android
 
 # Requirements
 - Kotlin 1.5.10

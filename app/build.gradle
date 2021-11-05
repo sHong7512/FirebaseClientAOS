@@ -53,6 +53,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging-ktx'
     // firebase In-App Messaging
     implementation 'com.google.firebase:firebase-inappmessaging-display-ktx'
+    // firebase Remote Config
+    implementation 'com.google.firebase:firebase-config-ktx'
 
     // google play analytics
     implementation "com.google.android.gms:play-services-analytics:17.0.1"
