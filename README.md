@@ -1,5 +1,5 @@
-# Firebase AOS Client 
-FCM & Analytics Example
+# Firebase Client 
+Firebase Client Example
 
 # Setting FCM
 Tools -> firebase -> Cloud Messaging -> Set up Firebase Cloud Messaging
@@ -13,6 +13,7 @@ firebase 프로젝트 생성 -> 앱등록 -> 구성파일 다운로드(google-se
 ~ % open -e .bash_profile
 add path
 ```
+# adb path
 export PATH=$PATH:/Users/shong/Library/Android/sdk/platform-tools/
 ```
 ~ % source ~/.bash_profile

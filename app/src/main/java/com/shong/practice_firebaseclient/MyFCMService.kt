@@ -49,6 +49,7 @@ class MyFCMService : FirebaseMessagingService() {
     private fun sendNotification(title: String, messageBody: String) {
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK //or Intent.FLAG_ACTIVITY_NEW_TASK
+            putExtra("open_fcm", true)
         }
         val pendingIntent = PendingIntent.getActivity(
             this,
