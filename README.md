@@ -19,9 +19,13 @@ export PATH=$PATH:/Users/shong/Library/Android/sdk/platform-tools/
 ```
 ~ % source ~/.bash_profile
 
-~ % adb version     (adb 동작확인)
+(adb 동작확인)
 
-~ % adb devices     (adb devices 확인)
+~ % adb version     
+
+(adb devices 확인)
+
+~ % adb devices     
 
 ~ % cd /Users/[user name]/Library/Android/sdk/platform-tools
 
