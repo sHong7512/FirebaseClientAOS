@@ -9,9 +9,10 @@ firebase 프로젝트 생성 -> 앱등록 -> 구성파일 다운로드(google-se
 # Setting Analytics (and DebugView)
 
 - Path (Mac) (On Terminal) 
-
+```
 ~ % open -e .bash_profile
-add path
+```
+and add path
 ```
 # adb path
 export PATH=$PATH:/Users/shong/Library/Android/sdk/platform-tools/
