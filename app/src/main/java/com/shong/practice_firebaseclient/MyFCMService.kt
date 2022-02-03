@@ -20,7 +20,7 @@ import com.google.firebase.messaging.RemoteMessage
 
 class MyFCMService : FirebaseMessagingService() {
     private val TAG = this::class.java.simpleName + "_sHong"
-    private val NOTIFICATION_ID = 7512
+    private val NOTIFICATION_ID = 6231
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
@@ -55,14 +55,14 @@ class MyFCMService : FirebaseMessagingService() {
             this,
             NOTIFICATION_ID , //requestCode
             intent,
-            PendingIntent.FLAG_ONE_SHOT
-//            PendingIntent.FLAG_UPDATE_CURRENT
+//            PendingIntent.FLAG_ONE_SHOT
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val channelId = "sHong_FCM"
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_represent)
             .setContentTitle(title)
             .setContentText(messageBody)
             .setAutoCancel(true)
